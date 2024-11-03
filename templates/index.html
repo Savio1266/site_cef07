@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Controle de Ocorrências CEF 07</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .logo {
+            margin: 20px auto;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+        }
+
+        .buttons {
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.75em; /* Mantendo o rodapé discreto */
+            color: #999; /* Cor cinza clara para ser discreta */
+            text-align: center;
+            background-color: transparent; /* Sem fundo */
+        }
+    </style>
+</head>
+<body>
+    <!-- Adicionando a logo no topo com tamanho ajustado -->
+    <div class="logo">
+        <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo CEF 07" width="250" height="250">
+    </div>
+
+    <h1>Bem-vindo ao Controle de Ocorrências do CEF 07</h1>
+
+    <div class="buttons">
+        <a href="{{ url_for('login') }}" class="btn">Acesso Professor</a>
+        <a href="{{ url_for('login_responsavel') }}" class="btn">Acesso Responsável</a>
+    </div>
+
+    <!-- Mensagem no rodapé -->
+    <footer>
+        <p>© 2024 CEF 07 de Sobradinho - Desenvolvido pelo Professor Wellton Sávio</p>
+    </footer>
+</body>
+</html>

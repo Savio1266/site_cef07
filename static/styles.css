@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #eef2f3;
+    text-align: center;
+    margin-top: 50px;
+}
+
+h1 {
+    color: #444;
+}
+
+.buttons {
+    margin-top: 30px;
+}
+
+/* Estilo dos botões em telas grandes */
+.btn {
+    display: inline-block;
+    padding: 15px 25px;
+    margin: 10px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Efeito ao passar o mouse */
+.btn:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilização do rodapé */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #222;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Media Queries para telas menores (smartphones) */
+@media only screen and (max-width: 600px) {
+    body {
+        margin-top: 20px; /* Reduzir margem superior em telas menores */
+    }
+
+    /* Estilo dos botões em telas pequenas */
+    .btn {
+        display: block;
+        width: 90%; /* Ocupa quase toda a largura da tela */
+        margin: 10px auto; /* Centraliza e cria espaço entre os botões */
+        padding: 12px 0; /* Ajusta o padding para não ocupar muito espaço */
+    }
+
+    /* Rodapé ajustado para telas pequenas */
+    footer {
+        font-size: 12px; /* Reduzir o tamanho da fonte no rodapé */
+    }
+}

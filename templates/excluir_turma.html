@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Excluir Turma</title>
+</head>
+<body>
+    <h1>Excluir Turma</h1>
+    <form method="POST" action="{{ url_for('excluir_turma') }}">
+        <label for="turma_id">Selecione a Turma:</label>
+        <select id="turma_id" name="turma_id" required>
+            {% for turma in turmas %}
+                <option value="{{ turma[0] }}">{{ turma[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn">Excluir</button>
+    </form>
+
+    <a href="{{ url_for('index') }}" class="btn">Voltar à Janela Principal</a>
+</body>
+</html>

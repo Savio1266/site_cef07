@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Acesso Responsável</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px; /* Aumenta o espaçamento dentro das células */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Acesso para Responsáveis</h1>
+    <form method="POST" action="{{ url_for('responsavel') }}">
+        <label for="nome_filho">Nome do Filho(a):</label>
+        <input type="text" id="nome_filho" name="nome_filho" required>
+        <button type="submit" class="btn">Verificar Ocorrências</button>
+    </form>
+
+    {% if nome_filho %}
+        {% if ocorrencias %}
+            <h2>Ocorrências de {{ nome_filho }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Nome do Aluno</th>
+                        <th>Turma</th>
+                        <th>Tipo de Ocorrência</th>
+                        <th>Motivo</th>
+                        <th>Dias de Suspensão</th> <!-- Nova coluna para dias de suspensão -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ocorrencia in ocorrencias %}
+                        <tr>
+                            <td>{{ ocorrencia[3] }}</td> <!-- Data da ocorrência -->
+                            <td>{{ ocorrencia[1] }}</td> <!-- Nome do aluno -->
+                            <td>{{ ocorrencia[2] }}</td> <!-- Nome da turma -->
+                            <td>{{ ocorrencia[4] }}</td> <!-- Tipo de ocorrência -->
+                            <td>{{ ocorrencia[5] }}</td> <!-- Motivo -->
+                            <td>
+                                {% if ocorrencia[4] == 'SUSPENSAO' %} <!-- Verifica se o tipo é Suspensão -->
+                                    {{ ocorrencia[6] }} <!-- Exibe o total de dias de suspensão -->
+                                {% else %}
+                                    N/A <!-- Caso não seja suspensão -->
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Não foram encontradas ocorrências para {{ nome_filho }}.</p>
+        {% endif %}
+    {% endif %}
+
+    <!-- Mensagem no rodapé -->
+    <footer>
+        <p>© 2024 CEF 07 de Sobradinho - Desenvolvido pelo Professor Wellton Sávio</p>
+    </footer>
+</body>
+</html>

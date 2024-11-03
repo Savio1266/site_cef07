@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Cadastrar Turma</title>
+    <style>
+        /* Estilos para ocultar e exibir o formulário de cadastro da turma */
+        #turmaFormSection {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastrar Nova Turma</h1>
+
+        <!-- Formulário para escolher o turno -->
+        <form id="turnoForm">
+            <label for="turno">Escolha o Turno:</label>
+            <select id="turno" required>
+                <option value="" disabled selected>Selecione o turno</option>
+                <option value="Matutino">Matutino</option>
+                <option value="Vespertino">Vespertino</option>
+            </select>
+        </form>
+
+        <!-- Formulário para cadastrar uma nova turma (inicialmente oculto) -->
+        <div id="turmaFormSection">
+            <form method="POST" action="{{ url_for('cadastrar_turma') }}">
+                <input type="hidden" id="turnoEscolhido" name="turno">
+                <label for="nome_turma">Nome da Turma:</label>
+                <input type="text" id="nome_turma" name="nome_turma" required>
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+        </div>
+
+        <!-- Botões de navegação para voltar ou visualizar turmas -->
+        <div class="navigation-buttons" style="margin-top: 20px;">
+            <a href="{{ url_for('area_professor') }}" class="btn">Voltar à Área do Professor</a>
+            <a href="{{ url_for('visualizar_turmas') }}" class="btn">Visualizar Turmas Cadastradas</a>
+        </div>
+    </div>
+
+    <script>
+        const turnoSelect = document.getElementById('turno');
+        const turmaFormSection = document.getElementById('turmaFormSection');
+        const turnoEscolhido = document.getElementById('turnoEscolhido');
+
+        // Exibir o formulário de turma ao selecionar o turno
+        turnoSelect.addEventListener('change', function() {
+            turnoEscolhido.value = turnoSelect.value;  // Define o valor do turno escolhido
+            turmaFormSection.style.display = 'block';  // Exibe o formulário de cadastro de turma
+        });
+    </script>
+</body>
+</html>

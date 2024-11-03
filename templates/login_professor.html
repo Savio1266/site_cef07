@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Login - Professor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .link-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .link-container a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+            font-size: 0.75em;
+            color: #999;
+        }
+
+        .login-container footer {
+            margin-top: 10px;
+        }
+
+        .alert {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login do Professor</h1>
+
+        <!-- Exibir mensagem de erro ou pendência, se houver -->
+        {% if mensagem %}
+            <div class="alert">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="usuario">Usuário:</label>
+            <input type="text" id="usuario" name="usuario" required>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+
+            <button type="submit" class="btn">Entrar</button>
+        </form>
+
+        <div class="link-container">
+            <a href="{{ url_for('cadastro_professor_login') }}">Não tem conta? Cadastre-se aqui.</a>
+        </div>
+
+        <!-- Mensagem no rodapé -->
+        <footer>
+            <p>© 2024 CEF 07 de Sobradinho - Desenvolvido pelo Professor Wellton Sávio</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Excluir Aluno - Selecione a Turma</title>
+</head>
+<body>
+    <h1>Excluir Aluno - Selecione a Turma</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome da Turma</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turma in turmas %}
+                <tr>
+                    <td>{{ turma[0] }}</td>
+                    <td>{{ turma[1] }}</td>
+                    <td><a href="{{ url_for('excluir_aluno_turma', turma_id=turma[0]) }}" class="btn">Selecionar</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botão para voltar à Área do Professor -->
+    <a href="{{ url_for('area_professor') }}" class="btn">Voltar à Área do Professor</a>
+</body>
+</html>

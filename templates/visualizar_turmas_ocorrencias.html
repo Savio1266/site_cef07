@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Turmas com Ocorrências</title>
+</head>
+<body>
+    <h1>Turmas com Ocorrências Registradas</h1>
+    <ul>
+        {% for turma in turmas %}
+            <li>
+                <a href="{{ url_for('visualizar_ocorrencias_turma', turma_id=turma[0]) }}">{{ turma[1] }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Botão para voltar à Área do Professor -->
+    <a href="{{ url_for('area_professor') }}" class="btn">Voltar à Área do Professor</a>
+</body>
+</html>

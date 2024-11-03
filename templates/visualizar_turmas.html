@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Turmas Cadastradas</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn:focus {
+            outline: none;
+        }
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+        .turmas-section {
+            display: none;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Turmas Cadastradas</h1>
+
+    <!-- Botões principais -->
+    <button class="btn" id="btnMatutino">Matutino</button>
+    <button class="btn" id="btnVespertino">Vespertino</button>
+
+    <!-- Seção para Turmas Matutino -->
+    <div id="matutinoSection" class="turmas-section">
+        <h2>Turmas Matutino</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome da Turma</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for turma in turmas %}
+                    {% if turma[1] in ["B1 M", "B2 A", "B2 B", "B2 C", "B2 D", "B2 E", "B2 F", "B2 G", "B2 H", "B2 I", "B2 J", "B2 K"] %}
+                        <tr>
+                            <td>{{ turma[0] }}</td>
+                            <td>{{ turma[1] }}</td>
+                            <td><a href="{{ url_for('visualizar_alunos_turma', turma_id=turma[0]) }}" class="btn">Ver Alunos</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Seção para Turmas Vespertino -->
+    <div id="vespertinoSection" class="turmas-section">
+        <h2>Turmas Vespertino</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome da Turma</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for turma in turmas %}
+                    {% if turma[1] in ["B1 A", "B1 B", "B1 C", "B1 D", "B1 E", "B1 F", "B1 G", "B1 H", "B1 I", "B1 J", "B1 K", "B1 L"] %}
+                        <tr>
+                            <td>{{ turma[0] }}</td>
+                            <td>{{ turma[1] }}</td>
+                            <td><a href="{{ url_for('visualizar_alunos_turma', turma_id=turma[0]) }}" class="btn">Ver Alunos</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Botão para voltar à Área do Professor -->
+    <a href="{{ url_for('area_professor') }}" class="back-btn">Voltar à Área do Professor</a>
+
+    <script>
+        // Botões e seções
+        const btnMatutino = document.getElementById('btnMatutino');
+        const btnVespertino = document.getElementById('btnVespertino');
+        const matutinoSection = document.getElementById('matutinoSection');
+        const vespertinoSection = document.getElementById('vespertinoSection');
+
+        // Funções para mostrar/ocultar seções
+        btnMatutino.addEventListener('click', function() {
+            matutinoSection.style.display = 'block';
+            vespertinoSection.style.display = 'none';
+        });
+
+        btnVespertino.addEventListener('click', function() {
+            vespertinoSection.style.display = 'block';
+            matutinoSection.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

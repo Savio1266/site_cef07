@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Visualizar Ocorrências</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        select, .btn {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            background-color: #ffffff;
+        }
+
+        .message {
+            font-size: 1em;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualizar Ocorrências por Turma</h1>
+
+    <!-- Formulário para escolher a turma -->
+    <div class="form-container">
+        <form method="GET" action="{{ url_for('visualizar_ocorrencias') }}">
+            <label for="turma_id">Selecione a Turma:</label>
+            <select id="turma_id" name="turma_id" required>
+                <option value="">Selecione uma turma</option>
+                {% for turma in turmas %}
+                    <option value="{{ turma[0] }}" {% if turma_selecionada == turma[0] %} selected {% endif %}>
+                        {{ turma[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="button-container">
+                <button type="submit" class="btn">Ver Ocorrências</button>
+                <a href="{{ url_for('area_professor') }}" class="btn">Voltar à Área do Professor</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabela de ocorrências (apenas se houver ocorrências para exibir) -->
+    {% if ocorrencias %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Aluno</th>
+                    <th>Turma</th>
+                    <th>Tipo de Ocorrência</th>
+                    <th>Motivo</th>
+                    <th>Dias de Suspensão</th>
+                    <th>Chamar Responsável</th>
+                    <th>Data da Reunião</th>
+                    <th>Hora da Reunião</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ocorrencia in ocorrencias %}
+                    <tr>
+                        <td>{{ ocorrencia[3] }}</td> <!-- Data -->
+                        <td>{{ ocorrencia[1] }}</td> <!-- Nome do aluno -->
+                        <td>{{ ocorrencia[2] }}</td> <!-- Turma -->
+                        <td>{{ ocorrencia[4] }}</td> <!-- Tipo de Ocorrência -->
+                        <td>{{ ocorrencia[5] }}</td> <!-- Motivo -->
+                        <td>{{ ocorrencia[6] if ocorrencia[4] == 'SUSPENSAO' else 'N/A' }}</td> <!-- Dias de Suspensão -->
+                        <td>{{ 'Sim' if ocorrencia[7] == 'sim' else 'Não' }}</td> <!-- Chamar Responsável -->
+                        <td>{{ ocorrencia[8] }}</td> <!-- Data da Reunião -->
+                        <td>{{ ocorrencia[9] }}</td> <!-- Hora da Reunião -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {% if turma_selecionada %}
+            <p class="message">Nenhuma ocorrência encontrada para a turma selecionada.</p>
+        {% endif %}
+    {% endif %}
+
+    <!-- Mensagem no rodapé -->
+    <footer>
+        <p>© 2024 CEF 07 de Sobradinho - Desenvolvido pelo Professor Wellton Sávio</p>
+    </footer>
+</body>
+</html>

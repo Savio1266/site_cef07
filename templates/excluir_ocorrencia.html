@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Excluir Ocorrência</title>
+</head>
+<body>
+    <h1>Excluir Ocorrência</h1>
+
+    {% if ocorrencias %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Nome do Aluno</th>
+                    <th>Turma</th>
+                    <th>Tipo de Ocorrência</th>
+                    <th>Motivo</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ocorrencia in ocorrencias %}
+                    <tr>
+                        <td>{{ ocorrencia[3] }}</td> <!-- Data -->
+                        <td>{{ ocorrencia[1] }}</td> <!-- Nome do aluno -->
+                        <td>{{ ocorrencia[2] }}</td> <!-- Nome da turma -->
+                        <td>{{ ocorrencia[4] }}</td> <!-- Tipo de ocorrência -->
+                        <td>{{ ocorrencia[5] }}</td> <!-- Motivo -->
+                        <td>
+                            <form method="POST" action="{{ url_for('excluir_ocorrencia') }}">
+                                <input type="hidden" name="ocorrencia_id" value="{{ ocorrencia[0] }}">
+                                <button type="submit" class="btn">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Não foram encontradas ocorrências para exclusão.</p>
+    {% endif %}
+
+    <a href="{{ url_for('area_professor') }}" class="btn">Voltar à Área do Professor</a>
+
+    <!-- Mensagem no rodapé -->
+    <footer>
+        <p>© 2024 CEF 07 de Sobradinho - Desenvolvido pelo Professor Wellton Sávio</p>
+    </footer>
+</body>
+</html>

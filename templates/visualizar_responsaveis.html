@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Responsáveis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .btn {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>Responsáveis Cadastrados</h1>
+
+    <form method="GET" action="{{ url_for('visualizar_responsaveis') }}">
+        <label for="turma_id">Selecione a Turma:</label>
+        <select id="turma_id" name="turma_id" required>
+            {% for turma in turmas %}
+                <option value="{{ turma[0] }}">{{ turma[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn">Filtrar</button>
+    </form>
+
+    {% if responsaveis %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Responsável</th>
+                <th>Aluno</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for responsavel in responsaveis %}
+            <tr>
+                <td>{{ responsavel[0] }}</td>
+                <td>{{ responsavel[1] }}</td>
+                <td>
+                    <!-- Formulário para excluir o responsável -->
+                    <form method="POST" action="{{ url_for('excluir_responsavel') }}" onsubmit="return confirm('Tem certeza que deseja excluir este responsável?');">
+                        <input type="hidden" name="responsavel_id" value="{{ responsavel[2] }}">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum responsável encontrado para esta turma.</p>
+    {% endif %}
+
+    <a href="{{ url_for('area_professor') }}" class="btn">Voltar à Área do Professor</a>
+</body>
+</html>

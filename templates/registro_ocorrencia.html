@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Registrar Ocorrência</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        select, input[type="date"], input[type="time"], input[type="number"], input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1em;
+            transition: border-color 0.2s;
+        }
+        select:focus, input:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        input[type="radio"] {
+            margin-left: 10px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75em; /* Diminuído para uma aparência mais discreta */
+            color: #999; /* Cor clara para o rodapé */
+            margin-top: 20px;
+            background-color: transparent; /* Sem fundo */
+        }
+        #dias_suspensao, #reuniao_info {
+            display: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registrar Ocorrência</h1>
+        <form method="POST" action="{{ url_for('registrar_ocorrencia') }}">
+            <label for="turma_id">Selecione a Turma:</label>
+            <select id="turma_id" name="turma_id" required>
+                <option value="">Selecione uma turma</option>
+                {% for turma in turmas %}
+                    <option value="{{ turma[0] }}">{{ turma[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="aluno_id">Selecione o Aluno:</label>
+            <select id="aluno_id" name="aluno_id" required>
+                <option value="">Selecione um aluno</option>
+            </select>
+
+            <label for="data_ocorrencia">Data da Ocorrência:</label>
+            <input type="date" id="data_ocorrencia" name="data_ocorrencia" required>
+
+            <label for="tipo_ocorrencia">Tipo de Ocorrência:</label>
+            <select id="tipo_ocorrencia" name="tipo_ocorrencia" required>
+                <option value="ADVERTENCIA_PEDAGOGICA">Advertência Pedagógica</option>
+                <option value="ADVERTENCIA_DISCIPLINAR">Advertência Disciplinar</option>
+                <option value="SUSPENSAO">Suspensão</option>
+            </select>
+
+            <!-- Campo para total de dias de suspensão, inicialmente escondido -->
+            <div id="dias_suspensao">
+                <label for="total_dias">Total de Dias de Suspensão:</label>
+                <input type="number" id="total_dias" name="total_dias" min="1">
+            </div>
+
+            <label for="motivo">Motivo da Ocorrência:</label>
+            <textarea id="motivo" name="motivo" required></textarea>
+
+            <label for="professor">Professor Responsável:</label>
+            <input type="text" id="professor" name="professor" required>
+
+            <label for="chamar_responsavel">Chamar Responsável?</label>
+            <div class="radio-group">
+                <label><input type="radio" id="sim" name="chamar_responsavel" value="sim"> Sim</label>
+                <label><input type="radio" id="nao" name="chamar_responsavel" value="nao" checked> Não</label>
+            </div>
+
+            <div id="reuniao_info">
+                <label for="data_reuniao">Data da Reunião:</label>
+                <input type="date" id="data_reuniao" name="data_reuniao">
+                <label for="hora_reuniao">Hora da Reunião:</label>
+                <input type="time" id="hora_reuniao" name="hora_reuniao">
+            </div>
+
+            <button type="submit" class="btn">Registrar</button>
+        </form>
+
+        <!-- Botão para voltar à Área do Professor -->
+        <a href="{{ url_for('area_professor') }}" class="back-btn">Voltar à Área do Professor</a>
+
+        <!-- Mensagem no rodapé -->
+    </div>
+
+    <script>
+        const turmaSelect = document.getElementById('turma_id');
+        const alunoSelect = document.getElementById('aluno_id');
+
+        // Função para carregar os alunos dinamicamente quando uma turma for selecionada
+        turmaSelect.addEventListener('change', function() {
+            const turmaId = this.value;
+            if (turmaId) {
+                fetch(`/get_alunos/${turmaId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        alunoSelect.innerHTML = '<option value="">Selecione um aluno</option>';  // Limpa o campo de seleção
+                        data.forEach(aluno => {
+                            const option = document.createElement('option');
+                            option.value = aluno.id;
+                            option.textContent = aluno.nome;
+                            alunoSelect.appendChild(option);  // Adiciona os alunos da turma ao campo de seleção
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar os alunos:', error));
+            } else {
+                alunoSelect.innerHTML = '<option value="">Selecione um aluno</option>';  // Limpa o campo de seleção
+            }
+        });
+
+        const chamarResponsavel = document.getElementsByName('chamar_responsavel');
+        const reuniaoInfo = document.getElementById('reuniao_info');
+        const tipoOcorrencia = document.getElementById('tipo_ocorrencia');
+        const diasSuspensao = document.getElementById('dias_suspensao');
+
+        // Exibe ou oculta o campo de reunião baseado na opção de "chamar responsável"
+        chamarResponsavel.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'sim') {
+                    reuniaoInfo.style.display = 'block';
+                } else {
+                    reuniaoInfo.style.display = 'none';
+                }
+            });
+        });
+
+        // Exibe ou oculta o campo de total de dias de suspensão baseado na escolha do tipo de ocorrência
+        tipoOcorrencia.addEventListener('change', function() {
+            if (this.value === 'SUSPENSAO') {
+                diasSuspensao.style.display = 'block';
+            } else {
+                diasSuspensao.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

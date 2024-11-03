@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Cadastrar Alunos</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            width: 100%;
+        }
+        .aluno-field {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .btn {
+            padding: 12px 20px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+        .btn-add {
+            background-color: #28a745;
+            color: #fff;
+            font-weight: bold;
+            width: 100%;
+        }
+        .btn-add:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+        }
+        .back-btn {
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastrar Novos Alunos</h1>
+        <form method="POST" action="{{ url_for('cadastrar_aluno') }}">
+
+            <!-- Campo de seleção de turno -->
+            <div>
+                <label for="turno">Selecione o Turno:</label>
+                <select id="turno" name="turno" required onchange="filtrarTurmasPorTurno()">
+                    <option value="" disabled selected>Escolha o turno</option>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Vespertino">Vespertino</option>
+                </select>
+            </div>
+
+            <!-- Seção para selecionar turmas de acordo com o turno -->
+            <div>
+                <label for="turma_id">Selecione a Turma:</label>
+                <select id="turma_id" name="turma_id" required>
+                    <option value="" disabled selected>Escolha a turma</option>
+                    {% for turma in turmas %}
+                        <option value="{{ turma[0] }}" data-turno="{{ turma[2] }}">{{ turma[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Campos para adicionar nomes de alunos -->
+            <div id="alunos-container">
+                <div class="aluno-field">
+                    <label for="nome_aluno_1">Nome do Aluno:</label>
+                    <input type="text" id="nome_aluno_1" name="nome_aluno[]" required>
+                </div>
+            </div>
+
+            <!-- Botão para adicionar outro aluno -->
+            <button type="button" class="btn btn-add" onclick="addAlunoField()">Adicionar Outro Aluno</button>
+            <button type="submit" class="btn btn-submit">Cadastrar Alunos</button>
+        </form>
+
+        <!-- Botão para voltar à Área do Professor -->
+        <a href="{{ url_for('area_professor') }}" class="back-btn">Voltar à Área do Professor</a>
+    </div>
+
+    <script>
+        let alunoCount = 1;
+
+        function addAlunoField() {
+            alunoCount++;
+            const alunosContainer = document.getElementById('alunos-container');
+            const newField = document.createElement('div');
+            newField.classList.add('aluno-field');
+            newField.innerHTML = `
+                <label for="nome_aluno_${alunoCount}">Nome do Aluno:</label>
+                <input type="text" id="nome_aluno_${alunoCount}" name="nome_aluno[]" required>
+            `;
+            alunosContainer.appendChild(newField);
+        }
+
+        function filtrarTurmasPorTurno() {
+            const turnoSelecionado = document.getElementById('turno').value;
+            const turmas = document.getElementById('turma_id').options;
+
+            for (let i = 0; i < turmas.length; i++) {
+                const turma = turmas[i];
+                turma.style.display = turma.getAttribute('data-turno') === turnoSelecionado ? 'block' : 'none';
+            }
+            document.getElementById('turma_id').selectedIndex = 0;
+        }
+    </script>
+</body>
+</html>
